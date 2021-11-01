@@ -15,11 +15,16 @@ fi
 ## Get our branch name
 BRANCH=$(git branch | grep \* | awk {'print $2'})
 
+## Get dirpath
+PROJECT_ROOT=$(echo $URL | awk -F "/" '{print $NF}')
+DIRPATH=$(pwd | awk -F "$PROJECT_ROOT" '{print $NF}')
+DIRPATH=${DIRPATH#/}
+
 ## Slightly different formatting for gitlab vs github
 if [ $( echo $URL | awk -F '[//]' {'print $3'}) == "gitlab.com" ]; then
-	URL=$URL/-/$JOIN/$BRANCH/$1
+	URL=$URL/-/$JOIN/$BRANCH/$DIRPATH/$1
 else
-	URL=$URL/$JOIN/$BRANCH/$1
+	URL=$URL/$JOIN/$BRANCH/$DIRPATH/$1
 fi
 echo $URL
 
