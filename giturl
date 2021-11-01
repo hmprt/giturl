@@ -1,8 +1,27 @@
 #!/bin/bash
 
+
 ## Generates a clickable URL to a file or directory stored in a remote repo
 URL=$(git remote -v | tail -n 1 | awk {'print $2'})
 URL=${URL%.git}
+
+## Is this a "tree" or a "blob"?
+if [ -z $1 ]; then 
+	JOIN="tree"
+else
+	JOIN="blob"
+fi
+
+## Get our branch name
+BRANCH=$(git branch | grep \* | awk {'print $2'})
+
+## Slightly different formatting for gitlab vs github
+if [ $( echo $URL | awk -F '[//]' {'print $3'}) == "gitlab.com" ]; then
+	URL=$URL/-/$JOIN/$BRANCH/$1
+else
+	URL=$URL/$JOIN/$BRANCH/$1
+fi
+echo $URL
 
 
 
