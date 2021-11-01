@@ -1,0 +1,9 @@
+#!/bin/bash
+
+## Generates a clickable URL to a file or directory stored in a remote repo
+URL=$(git remote -v | tail -n 1 | awk {'print $2'})
+URL=${URL%.git}
+
+
+
+
